@@ -4,7 +4,7 @@ import { inter } from '@/app/ui/fonts';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Acme Dashboard',
+    template: '%s | Adsense Dashboard',
     default: 'Google Adsense Clone Dashboard',
   },
   description: 'The Dashboard, built with App Router.',
