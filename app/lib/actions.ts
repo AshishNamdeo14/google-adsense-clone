@@ -1,6 +1,8 @@
 "use server";
 
 import { z } from "zod";
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 import { sql } from "@vercel/postgres";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -60,7 +62,6 @@ export type State = {
         message: 'Database Error: Failed to Create Invoice.',
       };
     }
-   
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
   }
@@ -82,9 +83,27 @@ export async function updateInvoice(id: string, formData: FormData) {
   } catch {
     console.log("Error inserting invoice: Database Not Connected");
   }
-
   revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
 }
 
 export async function deleteInvoice(id: string) {
@@ -92,7 +111,7 @@ export async function deleteInvoice(id: string) {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     revalidatePath('/dashboard/invoices');
     return { message: 'Deleted Invoice.' };
-  } catch {
-    console.log("Error inserting invoice: Database Not Connected");
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Invoice.' };
   }
 }
