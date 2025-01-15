@@ -1,5 +1,5 @@
-## Next.js App Router Course - Starter
+## Google Adsense Clone
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+A Google AdSense Clone is an ad management platform designed to replicate Google AdSense's functionality and business model. It allows website owners, publishers, and advertisers to collaborate by displaying targeted advertisements on web pages and generating revenue through ad clicks or impressions.
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+//For Practice
